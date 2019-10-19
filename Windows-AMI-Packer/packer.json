@@ -1,0 +1,66 @@
+{
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "profile" : "default",
+            "region": "",
+            "instance_type": "t2.xlarge",
+            "ami_name": "Windows-Server-2019-AMI-Built",
+            "source_ami": "ami-0dbbd6f952e12feba",
+            "subnet_id": "",
+            "security_group_ids":[""],
+            "iam_instance_profile": "",
+            "ssh_private_key_file": "",
+            "ssh_keypair_name": "kops",
+            "user_data_file":"scripts/Winrm_bootstrap.ps1",
+            "communicator": "winrm",
+            "winrm_username": "Administrator",
+            "winrm_password": "SuperS3cr3t!!!!",
+            "force_deregister": "true",
+            "force_delete_snapshot": "true", 
+            "launch_block_device_mappings": [
+                {
+                  "device_name": "/dev/sda1",
+                  "volume_size": 50,
+                  "volume_type": "gp2",
+                  "delete_on_termination": true
+                }
+                ]    
+        }
+    ],
+    "provisioners": [
+        {
+           "type": "file",
+           "source": "scripts/join.ps1",
+           "destination": "c:\\k\\join.ps1"
+        },
+        {
+           "type": "file",
+           "source": "scripts/fix_metadata.ps1",
+           "destination": "c:\\k\\fix_metadata.ps1"
+        },
+        {
+            "type": "powershell",
+            "inline": [
+                "Write-Host '# Enable Container, Hypervisor, Virtualization Features'",
+                "Install-WindowsFeature -Name Containers",
+                "Enable-WindowsOptionalFeature -Online -FeatureName HypervisorPlatform",
+                "Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform"
+            ]
+        },
+        {
+            "type": "windows-restart",
+            "restart_check_command": "powershell -command \"&amp; {Write-Output 'Machine restarted.'}\""
+        },
+        {
+            "type": "powershell",
+            "inline": [
+                "Write-Host '# AWS - To enable user data execution on Windows Server 2019 or later (EC2Launch)'",
+                "Write-Host 'Starting Instance sysprep'",
+                "C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeInstance.ps1 -Schedule",
+                "C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\SysprepInstance.ps1 -NoShutdown",
+                "Write-Host 'Instance sysprepped'"
+            ]
+        }
+    ]
+}

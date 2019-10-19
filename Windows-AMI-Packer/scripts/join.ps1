@@ -11,6 +11,7 @@ Param(
 
 $KUBERNETES_VERSION="1.15.1"
 
+# docker installation
 invoke-webrequest -UseBasicparsing -Outfile docker-19-03-0.zip https://dockermsft.blob.core.windows.net/dockercontainer/docker-19-03-0.zip -verbose
 Expand-Archive docker-19-03-0.zip -DestinationPath $Env:ProgramFiles -Force
 Remove-Item -Force docker-19-03-0.zip
@@ -23,6 +24,12 @@ Start-Service docker
 # tag the image kube uses for Pause
 docker image pull mcr.microsoft.com/windows/nanoserver:1809
 docker image tag mcr.microsoft.com/windows/nanoserver:1809 microsoft/nanoserver:latest
+
+# volume plugins
+invoke-webrequest -UseBasicparsing -Outfile flexvolume-windows.zip https://github.com/microsoft/K8s-Storage-Plugins/releases/download/V0.0.3/flexvolume-windows.zip -verbose
+mkdir -p C:\usr\libexec\kubernetes\kubelet-plugins\volume\exec\
+Expand-Archive flexvolume-windows.zip -DestinationPath "C:\usr\libexec\kubernetes\kubelet-plugins\volume\exec\" -Force
+
 
 # download the Kube binaries
 mkdir -p C:\k\logs

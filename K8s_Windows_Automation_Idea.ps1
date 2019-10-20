@@ -17,7 +17,9 @@
                 $_.NetAdapter.Status -ne "Disconnected"
             }
         ).IPv4Address.IPAddress
+        C:\k\awsclisetup.ps1
         C:\k\join.ps1 -ManagementIP  $env:HostIP -NetworkMode overlay -ClusterCIDR 172.21.128.0/17 -KubeDnsServiceIP 172.21.0.10 -ServiceCIDR 172.21.0.0/17 -LogDir C:\k\logs -KubeletFeatureGates ""
+        C:\k\fix_metadata.ps1
         Break
       } 
       else 

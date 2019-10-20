@@ -43,13 +43,6 @@ mv C:\k\kubernetes\node\bin\*.exe C:\k
 # install all the bits - adapted from
 # https://raw.githubusercontent.com/microsoft/SDN/master/Kubernetes/flannel/start.ps1
 
-$NetworkMode="overlay"
-$ClusterCIDR="10.244.0.0/16"
-$KubeDnsServiceIP="10.96.0.10"
-$ServiceCIDR="10.96.0.0/12"
-$InterfaceName="Ethernet"
-$LogDir="C:\k`logs"
-
 $BaseDir = "c:\k"
 $NetworkMode = $NetworkMode.ToLower()
 $NetworkName = "cbr0"

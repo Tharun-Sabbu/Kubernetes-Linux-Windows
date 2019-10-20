@@ -11,7 +11,7 @@
             "security_group_ids":[""],
             "iam_instance_profile": "",
             "ssh_private_key_file": "",
-            "ssh_keypair_name": "kops",
+            "ssh_keypair_name": "",
             "user_data_file":"scripts/Winrm_bootstrap.ps1",
             "communicator": "winrm",
             "winrm_username": "Administrator",

@@ -8,7 +8,7 @@
     Write-Output "Started User-Data to join node to the cluster"
     while ($true)
     {
-      if(Get-S3Object -BucketName ${S3Bucket-Placeholder} "kubeadm" | where{$_.Key -like "kubeadm/${ClusterName}/config"})
+      if(Get-S3Object -BucketName ${S3Bucket-Placeholder} -KeyPrefix "kubeadm" | where{$_.Key -like "kubeadm/${ClusterName}/config"})
       { 
         Write-Output "Started process to join node"
         aws.cmd s3 cp s3://${S3Bucket-Placeholder}/kubeadm/${ClusterName}/config C:\k\

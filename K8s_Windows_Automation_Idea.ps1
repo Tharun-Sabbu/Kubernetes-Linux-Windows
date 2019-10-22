@@ -1,11 +1,11 @@
 <powershell>
+    Write-Output "Started User-Data to join node to the cluster"
     $TAG_NAME="KubernetesCluster"
     $INSTANCE_ID=cmd.exe /c curl -XGET http://169.254.169.254/latest/meta-data/instance-id
     $REGION=cmd.exe /c curl -XGET http://169.254.169.254/latest/meta-data/placement/availability-zone
     $REGION=$REGION.Substring(0,$REGION.Length-1)
     $instanceTags = Get-EC2Tag -Region $REGION -Filter @{ Name="resource-id"; Values=$INSTANCE_ID }
     $ClusterName = $instanceTags.Where({$_.Key -eq $TAG_NAME}).Value
-    Write-Output "Started User-Data to join node to the cluster"
     while ($true)
     {
       if(Get-S3Object -BucketName ${S3Bucket-Placeholder} -KeyPrefix "kubeadm" | where{$_.Key -like "kubeadm/${ClusterName}/config"})

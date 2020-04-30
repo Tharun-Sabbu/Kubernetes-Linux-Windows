@@ -35,16 +35,6 @@
            "destination": "c:\\k\\join.ps1"
         },
         {
-           "type": "file",
-           "source": "scripts/fix_metadata.ps1",
-           "destination": "c:\\k\\fix_metadata.ps1"
-        },
-        {
-           "type": "file",
-           "source": "scripts/awsclisetup.ps1",
-           "destination": "c:\\k\\awsclisetup.ps1"
-        },
-        {
             "type": "powershell",
             "inline": [
                 "Write-Host '# Enable Container, Hypervisor, Virtualization Features'",
